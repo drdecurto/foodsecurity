@@ -3,20 +3,25 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-# Load the merged dataset
-@st.cache  # Cache the data for faster performance
+@st.cache_data  # Updated caching method
 def load_data():
+    # Load 2019 dataset
     df_2019 = pd.read_csv('Global Food Security Index 2019.csv', skiprows=1, header=None)
     df_2019.columns = ["Index", "Rank", "Country", "Overall_Score", "Affordability", "Availability", "Quality_and_Safety"]
     df_2019.drop(columns=["Index"], inplace=True)
-    df_2019 = df_2019.apply(pd.to_numeric, errors='coerce', axis=1)
 
+    # Load 2022 dataset
     df_2022 = pd.read_csv('Global Food Security Index 2022.csv')
     df_2022.rename(columns={
         "Overall score": "Overall_Score",
         "Quality and Safety": "Quality_and_Safety"
     }, inplace=True)
 
+    # Ensure Country columns have the same dtype
+    df_2019['Country'] = df_2019['Country'].astype(str)
+    df_2022['Country'] = df_2022['Country'].astype(str)
+
+    # Merge datasets
     df_merged = pd.merge(
         df_2019,
         df_2022,

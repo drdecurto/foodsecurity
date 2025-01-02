@@ -34,7 +34,7 @@ def load_data():
 df_merged = load_data()
 
 # Streamlit App Layout
-st.title("Global Food Security Index Dashboard")
+st.title("Global Food Security: Key Indicators Across Countries")
 st.sidebar.header("Select Visualization")
 
 # Sidebar Options
